@@ -44,42 +44,91 @@ class ImageScreenState extends State<ImageScreen> {
           .toList(growable: false);
       print(imageList);
       if (imageList.length > 0) {
-        return Container(
-          margin: const EdgeInsets.all(8.0),
-          child: StaggeredGridView.countBuilder(
+        return ListView.builder(
+
             itemCount: imageList.length,
-            crossAxisCount: 4,
             itemBuilder: (context, index) {
-              final imgPath = imageList[index];
-              return Material(
-                elevation: 8.0,
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ViewPhotos(
-                          imgPath: imgPath,
-                        ),
+
+              final imgpath = imageList[index];
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewPhotos(
+                        imgPath: imgpath,
                       ),
-                    );
-                  },
-                  child: Hero(
-                      tag: imgPath,
-                      child: Image.file(
-                        File(imgPath),
-                        fit: BoxFit.cover,
-                      )),
+                    ),
+                  );
+                },
+
+                //padding: EdgeInsets.all(0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Card(
+                      margin: EdgeInsets.all(0),
+                      shape: Border.all(width: 3, color: Colors.grey),
+                      elevation: 20,
+                      color: Colors.black,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Image.file(File(imgpath),
+                                alignment: Alignment.centerRight,
+                                fit: BoxFit.cover,
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                height: 200.0),
+
+                          ]
+                      ),
+                    ),
+
+                  ],
+
                 ),
               );
-            },
-            staggeredTileBuilder: (i) =>
-                StaggeredTile.count(2, i.isEven ? 2 : 3),
-            mainAxisSpacing: 8.0,
-            crossAxisSpacing: 8.0,
-          ),
+
+
+            }
         );
+        
+        // return Container(
+        //   margin: const EdgeInsets.all(8.0),
+        //   child: StaggeredGridView.countBuilder(
+        //     itemCount: imageList.length,
+        //     crossAxisCount: 4,
+        //     itemBuilder: (context, index) {
+        //       final imgPath = imageList[index];
+        //       return Material(
+        //         elevation: 8.0,
+        //         borderRadius: const BorderRadius.all(Radius.circular(8)),
+        //         child: InkWell(
+        //           onTap: () {
+        //             Navigator.push(
+        //               context,
+        //               MaterialPageRoute(
+        //                 builder: (context) => ViewPhotos(
+        //                   imgPath: imgPath,
+        //                 ),
+        //               ),
+        //             );
+        //           },
+        //           child: Hero(
+        //               tag: imgPath,
+        //               child: Image.file(
+        //                 File(imgPath),
+        //                 fit: BoxFit.cover,
+        //               )),
+        //         ),
+        //       );
+        //     },
+        //     staggeredTileBuilder: (i) =>
+        //         StaggeredTile.count(2, i.isEven ? 2 : 3),
+        //     mainAxisSpacing: 8.0,
+        //     crossAxisSpacing: 8.0,
+        //   ),
+        // );
       } else {
         return Scaffold(
           body: Center(

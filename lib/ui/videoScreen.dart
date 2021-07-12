@@ -72,80 +72,104 @@ class _VideoGridState extends State<VideoGrid> {
 
     if (videoList != null) {
       if (videoList.length > 0) {
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-          child: GridView.builder(
-            itemCount: videoList.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 1,
-              childAspectRatio: 1.0,
-              mainAxisSpacing: 8.0,
-            ),
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PlayStatus(
-                      videoFile: videoList[index],
-                    ),
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(12)),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        // Where the linear gradient begins and ends
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                        stops: [0.1, 0.3, 0.5, 0.7, 0.9],
-                        colors: [
-                          Color(0xffb7d8cf),
-                          Color(0xffb7d8cf),
-                          Color(0xffb7d8cf),
-                          Color(0xffb7d8cf),
-                          Color(0xffb7d8cf),
-                        ],
+        return ListView.builder(
+            itemCount: videoList.length, itemBuilder: (context, index)
+
+          // return Container(
+          //   margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+          //   child: GridView.builder(
+          //     itemCount: videoList.length,
+          //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          //       crossAxisCount: 1,
+          //       childAspectRatio: 1.0,
+          //       mainAxisSpacing: 8.0,
+          //     ),
+          {
+            return InkWell(
+                onTap: () =>
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PlayStatus(
+                              videoFile: videoList[index],
+                            ),
                       ),
                     ),
-                    child: FutureBuilder(
-                        future: _getImage(videoList[index]),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            if (snapshot.hasData) {
-                              return Hero(
-                                tag: videoList[index],
-                                child: Image.file(
-                                  File(snapshot.data),
-                                  fit: BoxFit.cover,
-                                ),
-                              );
-                            } else {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                          } else {
-                            return Hero(
-                              tag: videoList[index],
-                              child: SizedBox(
-                                height: 280.0,
-                                child: Image.asset(
-                                    'assets/images/video_loader.gif'),
-                              ),
-                            );
-                          }
-                        }),
-                    //new cod
-                  ),
-                ),
-              );
-            },
-          ),
+                // child: ClipRRect(
+                //   borderRadius: const BorderRadius.all(Radius.circular(12)),
+                //   child: Container(
+                //     decoration: const BoxDecoration(
+                //       gradient: LinearGradient(
+                //         // Where the linear gradient begins and ends
+                //         begin: Alignment.bottomLeft,
+                //         end: Alignment.topRight,
+                //         stops: [0.1, 0.3, 0.5, 0.7, 0.9],
+                //         colors: [
+                //           Color(0xffb7d8cf),
+                //           Color(0xffb7d8cf),
+                //           Color(0xffb7d8cf),
+                //           Color(0xffb7d8cf),
+                //           Color(0xffb7d8cf),
+                //         ],
+                //       ),
+                //),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Container(
+                        height: 200.0,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width * 0.5,
+                        child: Card(
+                          margin: EdgeInsets.all(0),
+                          shape: Border.all(width: 3, color: Colors.grey),
+                          elevation: 20,
+                          color: Colors.black,
+
+                          child: FutureBuilder(
+                              future: _getImage(videoList[index]),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  if (snapshot.hasData) {
+                                    return Hero(
+                                      tag: videoList[index],
+                                      child: Image.file(
+                                        File(snapshot.data),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    );
+                                  } else {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                } else {
+                                  return Hero(
+                                    tag: videoList[index],
+                                    child: SizedBox(
+                                      height: 280.0,
+                                      child: Image.asset(
+                                          'assets/images/video_loader.gif'),
+                                    ),
+                                  );
+                                }
+                              }
+                          ),
+                        ),
+                      ),
+                    ]
+                )
+            );
+          }
+
         );
-      } else {
+
+    }
+    else {
         return const Center(
           child: Text(
             'Sorry, No Videos Found.',
